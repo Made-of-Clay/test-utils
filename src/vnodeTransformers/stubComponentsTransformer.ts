@@ -77,7 +77,7 @@ export const createStub = ({
         // Only a problem when shallow mounting. For this reason we iterate of the
         // props that will be passed and stringify any that are symbols.
         // Also having function text as attribute is useless and annoying so
-        // we replace it with "[Function]""
+        // we replace it with "[Function]"
         const stubProps = normalizeStubProps(props)
 
         return h(tag, stubProps, renderStubDefaultSlot ? slots : undefined)
