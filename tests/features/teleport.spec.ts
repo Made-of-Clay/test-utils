@@ -3,6 +3,7 @@ import { defineComponent, h, Teleport } from 'vue'
 import { mount } from '../../src'
 import WithTeleportPropsComp from '../components/WithTeleportPropsComp.vue'
 import WithTeleportEmitsComp from '../components/WithTeleportEmitsComp.vue'
+import ReactiveTeleporter from '../components/ReactiveTeleporter.vue'
 import WithProps from '../components/WithProps.vue'
 import EmitsEvent from '../components/EmitsEvent.vue'
 
@@ -143,5 +144,23 @@ describe('teleport', () => {
     withProps.trigger('click')
 
     expect(withProps.emitted().greet[0]).toEqual(['Hey!'])
+  })
+
+  it('updates reactive values inside teleported content', async () => {
+    const wrapper = mount(ReactiveTeleporter, {
+      global: {
+        stubs: {
+          teleport: true
+        }
+      }
+    })
+
+    expect(wrapper.find('#outerCount').text()).toBe('0')
+    expect(wrapper.find('#innerCount').text()).toBe('0')
+
+    await wrapper.find('button').trigger('click')
+
+    expect(wrapper.find('#outerCount').text()).toBe('1')
+    expect(wrapper.find('#innerCount').text()).toBe('1')
   })
 })
